@@ -7,6 +7,8 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     restart: always
+    networks:
+      -inception_network
 
   wordpress:
     build: ./requirements/wordpress
@@ -20,6 +22,7 @@ services:
     restart: always
     expose: 
       - "9000"
+    networks: inception_network
 
   nginx:
     build: ./requirements/nginx
@@ -31,7 +34,13 @@ services:
     volumes:
       - wordpress_data:/var/www/html
     restart: always
+    networks:
+      -inception_network
 
 volumes:
   mariadb_data:
   wordpress_data:
+ 
+networks:
+ inception_network:
+ 
