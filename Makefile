@@ -5,6 +5,8 @@ COMPOSE = docker compose -f srcs/docker-compose.yml
 all: up
 
 up:
+	mkdir -p /home/mabi-nak/data/mariadb
+	mkdir -p /home/mabi-nak/data/wordpress
 	$(COMPOSE) up -d --build
 
 down:
@@ -30,6 +32,8 @@ ps:
 
 clean:
 	$(COMPOSE) down -v
+	rm -rf /home/mabi-nak/data/mariadb
+	rm -rf /home/mabi-nak/data/wordpress
 
 fclean: clean
 	docker system prune -af

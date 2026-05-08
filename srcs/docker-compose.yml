@@ -2,6 +2,7 @@ services:
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
+    image: mariadb
     env_file:
       - .env
     volumes:
@@ -13,6 +14,7 @@ services:
   wordpress:
     build: ./requirements/wordpress
     container_name: wordpress
+    image: wordpress
     depends_on:
       - mariadb
     env_file:
@@ -20,14 +22,15 @@ services:
     volumes:
       - wordpress_data:/var/www/html
     restart: always
-    expose: 
+    expose:
       - "9000"
-    networks: 
-    - inception_network
+    networks:
+      - inception_network
 
   nginx:
     build: ./requirements/nginx
     container_name: nginx
+    image: nginx
     depends_on:
       - wordpress
     ports:
@@ -39,8 +42,19 @@ services:
       - inception_network
 
 volumes:
-  - mariadb_data:/var/lib/mysql
-  - wordpress_data:/var/www/html
- 
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mabi-nak/data/mariadb
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mabi-nak/data/wordpress
+
 networks:
-  - inception_network
+  inception_network:
+    driver: bridge
