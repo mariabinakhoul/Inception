@@ -47,13 +47,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/mabi-nak/data/mariadb
+      device: /home/maria/data/mariadb
   wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/mabi-nak/data/wordpress
+      device: /home/maria/data/wordpress
 
 networks:
   inception_network:
