@@ -14,7 +14,7 @@ services:
   wordpress:
     build: ./requirements/wordpress
     container_name: wordpress
-    image: wordpress
+    image: wordpre
     depends_on:
       - mariadb
     env_file:

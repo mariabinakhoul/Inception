@@ -7,14 +7,17 @@ until mysqladmin ping -h "${WORDPRESS_DB_HOST}" -u "${WORDPRESS_DB_USER}" -p"${W
     sleep 2
 done
 
+# Define WP-CLI shortcut with increased memory
+WP="php -d memory_limit=512M /usr/local/bin/wp"
+
 # Download WordPress core if not already present
 if [ ! -f /var/www/html/wp-login.php ]; then
-    wp core download --allow-root --path=/var/www/html
+    $WP core download --allow-root --path=/var/www/html
 fi
 
 # Create wp-config.php if not already present
 if [ ! -f /var/www/html/wp-config.php ]; then
-    wp config create \
+    $WP config create \
         --allow-root \
         --path=/var/www/html \
         --dbname="${WORDPRESS_DB_NAME}" \
@@ -24,8 +27,8 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 fi
 
 # Install WordPress if not already installed
-if ! wp core is-installed --allow-root --path=/var/www/html; then
-    wp core install \
+if ! $WP core is-installed --allow-root --path=/var/www/html; then
+    $WP core install \
         --allow-root \
         --path=/var/www/html \
         --url="https://mabi-nak.42.fr" \
@@ -36,7 +39,7 @@ if ! wp core is-installed --allow-root --path=/var/www/html; then
         --skip-email
 
     # Create second regular user
-    wp user create editor editor@student.42.fr \
+    $WP user create editor editor@student.42.fr \
         --allow-root \
         --path=/var/www/html \
         --role=editor \
